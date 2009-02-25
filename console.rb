@@ -8,9 +8,9 @@ module Cyc
     @@constants = []
 
     API_QUIT = "(api-quit)"
-    def initialize(host="localhost", port=3601)
-      @port = port
+    def initialize(host, port)
       @host = host
+      @port = port
       @conn = Net::Telnet.new("Port" => @port, "Telnetmode" => false, 
                               "Host" => @host, "Timeout" => 600)
       @line = ""
@@ -66,5 +66,7 @@ end
 Readline.completion_append_character = nil
 Readline.completion_proc = Cyc::Console::CompletionProc
 
-console = Cyc::Console.new(ARGV[0],ARGV[1])
+host = ARGV[0] || "localhost"
+port = ARGV[1] || 3601
+console = Cyc::Console.new(host,port)
 console.main_loop
