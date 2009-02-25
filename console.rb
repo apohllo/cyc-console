@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'readline'
 require 'cycr'
 require 'nlp'
