@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 require 'readline'
 require 'nlp'
 require 'net/telnet'
@@ -150,13 +152,3 @@ module Cyc
   end
 end
 
-if Readline.respond_to?("basic_word_break_characters=")
-  Readline.basic_word_break_characters= " \t\n\"\\'`><=;|&{("
-end
-Readline.completion_append_character = nil
-Readline.completion_proc = Cyc::Console::CompletionProc
-
-host = ARGV[0] || "localhost"
-port = ARGV[1] || 3601
-console = Cyc::Console.new(host,port)
-console.main_loop
