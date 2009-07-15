@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "cyc-console"
-  s.version = "0.0.1"
-  s.date = "2009-06-22"
+  s.version = "0.0.2"
+  s.date = "2009-07-15"
   s.summary = "Ruby console for the Cyc ontology"
   s.email = "apohllo@o2.pl"
   s.homepage = "http://apohllo.pl"
