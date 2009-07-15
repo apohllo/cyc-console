@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "cyc-console"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.date = "2009-07-15"
   s.summary = "Ruby console for the Cyc ontology"
   s.email = "apohllo@o2.pl"
@@ -10,10 +10,13 @@ Gem::Specification.new do |s|
   # the lib path is added to the LOAD_PATH
   s.require_path = "lib"
   # include Rakefile, gemspec, README and all the source files
-  s.files = ["Rakefile", "cyc-console.gemspec", "README.txt"] +
-    Dir.glob("lib/**/*")
-  # include tests and specs
-  s.test_files = Dir.glob("{test,spect,features}/**/*")
+  s.files = [
+    'lib/cyc/console.rb',
+    "Rakefile", 
+    "cyc-console.gemspec", 
+    "README.txt",
+    "changelog.txt"
+  ] 
   # include README while generating rdoc
   s.rdoc_options = ["--main", "README.txt"]
   s.has_rdoc = true
