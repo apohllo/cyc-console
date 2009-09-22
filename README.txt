@@ -43,7 +43,7 @@ Then you can type:
 
 == BASIC USAGE: 
 
-The gem comes with +cyc+ command, so you can simply type:
+The gem comes with +cyc+ command, so you can simply type (provided the Cyc server is running):
 
   $ cyc
   cyc@localhost:3601>
