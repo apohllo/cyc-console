@@ -1,6 +1,8 @@
+0.0.5
+  - missing dependency on *colors* added
 0.0.4
-	- autocompletion for symbols
-	- autocompletion for functions defined in ~/.cyc_functions
+  - autocompletion for symbols
+  - autocompletion for functions defined in ~/.cyc_functions
 0.0.3
   - fix: added missing library and changelog.txt to gemspec
 0.0.2
