@@ -12,10 +12,15 @@ Console for the Cyc ontology written in Ruby.
 * highlighting of unmatched parenthesis
 * colorful prompt
 * readline based editing (arrows, delete, etc. works!)
+* autocompletion of symbols (present in server answers)
+  and functions (listed in ~/.cyc_functions)
 
 * problems with multiline commands
 * messeges send to stdout are not visible
 * errors are not printed - only nil is returned
+* text protocol is used (lenghty output is cut, it might be slower
+  than the binary protocol, but is not as important when working
+  in interactive mode)
 
 == SYNOPSIS:
 
@@ -28,22 +33,42 @@ these limitations.
 
 == INSTALL:
 
-You need RubyGems v. 1.2 
+You need RubyGems v. 1.3.3
 
-* gem -v 
-* 1.2.0 #=> ok
+  $ gem -v 
+  1.2.0 #=> not OK
+  $ gem update --system
+  ...
+  $ gem -v
+  1.3.3 #=> OK
 
-You need the github.com repository to be added to your sources list:
+You need the gemcutter repository to be added to your sources list:
 
-* gem sources -a http://gems.github.com
+ $ gem sources -a http://gemcutter.org
 
-Then you can type:
+Then you can install the Cyc console with:
 
-* sudo gem install apohllo-cyc-console
+ $ sudo gem install cyc-console
+
+If it doesn't work as expected:
+
+ ERROR:  could not find gem cyc-console locally or in a repository
+
+try installing the gemcutter gem, and issuing
+the gem tumble command:
+
+ $ sudo gem install gemcutter
+ $ sudo gem tumble
+
+And then try to install the gem once again:
+
+ $ sudo gem install cyc-console
 
 == BASIC USAGE: 
 
-The gem comes with +cyc+ command, so you can simply type (provided the Cyc server is running):
+The gem comes with +cyc+ command, so you can simply type 
+(provided the Cyc server is running on localhost on the default
+port and you have rubygems bin directory in your path):
 
   $ cyc
   cyc@localhost:3601>
@@ -65,7 +90,7 @@ The history is kept ~/.cyc_history and remembers 1000 commands by default.
 You can change these, by providing CYC_HISTORY_FILE and CYC_HISTORY_SIZE 
 environment varibles respectively.
 
-One helpful features is to brows the history by providing the beginning of the command.
+One helpful feature is to brows the history by providing the beginning of the command.
 If you type:
 
   cyc@localhost:3601>(genl?<PG-UP>
