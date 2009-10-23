@@ -66,9 +66,20 @@ And then try to install the gem once again:
 
 == BASIC USAGE: 
 
-The gem comes with +cyc+ command, so you can simply type 
-(provided the Cyc server is running on localhost on the default
-port and you have rubygems bin directory in your path):
+Prerequisites:
+* Cyc server is running 
+  * you can download it from http://www.opencyc.org
+* Telnet connection is on
+  * type (enable-tcp-server :cyc-api 3601) in the cyc console or Cyc Browser
+    -> Tools -> Interactor
+* rubygems +bin+ directory is in your PATH variable:
+  * +export PATH=/usr/lib/ruby/gems/1.8/bin+
+  * you might have to adjust it to your system (e.g. in Debian it would be
+    +/var/lib/gems.../+
+  * you might want to store it in your +.bashrc+
+  
+
+The gem comes with +cyc+ command, so you can simply type:
 
   $ cyc
   cyc@localhost:3601>
