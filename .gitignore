@@ -1,2 +1,7 @@
 *.gem
 .*.sw?
+.bundle
+Gemfile
+Gemfile.lock
+work
+doc
