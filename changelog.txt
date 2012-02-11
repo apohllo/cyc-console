@@ -1,3 +1,5 @@
+0.0.6
+  - dependency on cycr replacing built-in Cyc connection mechanism
 0.0.5
   - missing dependency on *colors* added
 0.0.4

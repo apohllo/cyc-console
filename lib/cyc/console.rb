@@ -2,13 +2,11 @@
 
 require 'readline'
 require 'colors'
-require 'net/telnet'
+require 'cycr'
 
 module Cyc
-  class ParenthesisNotMatched < RuntimeError; end
-
   class Configurable
-  
+
     attr_reader :configuration
     attr_writer :verbose
 
@@ -43,7 +41,7 @@ module Cyc
 
  end
   #
-  # Stolen (with permission from the author :) from Wirble history for IRB 
+  # Stolen (with permission from the author :) from Wirble history for IRB
   # http://pablotron.org/software/wirble/
   #
   class History < Configurable
@@ -82,7 +80,7 @@ module Cyc
       :path   => ENV['CYC_FUNCTIONS_FILE'] || "~/.cyc_functions",
       :perms  => File::WRONLY | File::CREAT | File::TRUNC
     }
- 
+
     def initialize(opt = nil)
       @opt = DEFAULTS.merge(opt || {})
       super()
@@ -104,30 +102,9 @@ module Cyc
       History.new({})
       @host = host
       @port = port
-      @conn = Net::Telnet.new("Port" => @port, "Telnetmode" => false, 
-                              "Host" => @host, "Timeout" => 600)
+      @cyc = Cyc::Client.new(@host,@port)
       @line = ""
       @count = 0
-    end
-
-    # Scans the :str: to find out if the parenthesis are matched
-    # raises ParenthesisNotMatched exception if there is not matched closing 
-    # parenthesis. The message of the exception contains the string with the 
-    # unmatched parenthesis highlighted.
-    def match_par(str)
-      position = 0
-      str.scan(/./) do |char| 
-        position += 1
-        next if char !~ /\(|\)/
-        @count += (char == "(" ?  1 : -1)
-        if @count < 0 
-          @count = 0
-          raise ParenthesisNotMatched.
-            new((position > 1 ? str[0..position-2] : "") + 
-              ")".hl(:red) + str[position..-1])
-        end
-      end
-      @count == 0
     end
 
     def add_autocompletion(str)
@@ -138,38 +115,35 @@ module Cyc
     def main_loop
       loop do
         begin
-          line = Readline::readline(("cyc@" + "#{@host}:#{@port}" + 
-              (@count > 0 ? ":#{"("*@count}" : "") + "> ").hl(:blue)) 
-          case line 
-          when API_QUIT 
-            @conn.puts(line)
+          line = Readline::readline(("cyc@" + "#{@host}:#{@port}" +
+              (@count > 0 ? ":#{"("*@count}" : "") + "> "))
+          case line
+          when nil
+            puts
             break
-          when "exit"
-            @conn.puts(API_QUIT)
+          when API_QUIT,"exit"
+            @cyc.raw_talk(API_QUIT) rescue nil
             break
           else
             @line += "\n" unless @line.empty?
             @line += line
             letters = @line.split("")
             Readline::HISTORY.push(@line) if line
-            if match_par(line)
-              @conn.puts(@line)
-              @line = ""
-              answer = @conn.waitfor(/\d\d\d/)
-              message = answer.sub(/(\d\d\d) (.*)\n/,"\\2") if answer
-              if($1.to_i == 200)
-                puts message
-                add_autocompletion(message)
-              else
-                puts "Error: " + answer.to_s
-              end
-            end
+            message = @cyc.raw_talk(@line)
+            @line = ""
+            @count = 0
+            puts message.gsub(/(\#\$[\w-]+)/,"\\1".hl(:blue))
+            add_autocompletion(message)
           end
-        rescue ParenthesisNotMatched => exception
-          puts exception
+        rescue ::Cyc::UnbalancedClosingParenthesis => exception
+          puts exception.to_s.sub(/<error>([^<]*)<\/error>/,"\\1".hl(:red))
           @line = ""
-#        rescue Exception => exception
-#          puts exception
+        rescue ::Cyc::UnbalancedOpeningParenthesis => exception
+          @count = exception.count
+        rescue Exception => exception
+          puts "Error: " + exception.to_s
+          @count = 0
+          @line = ""
         end
       end
     end
