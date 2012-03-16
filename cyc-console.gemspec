@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README.txt"]
   s.executables = ['cyc']
   s.add_dependency("colors", [">= 0.0.4"])
-  s.add_dependency("cycr", ["~> 0.1.0"])
+  s.add_dependency("cycr", ["~> 0.2.0"])
 end
 

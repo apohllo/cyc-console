@@ -102,7 +102,7 @@ module Cyc
       History.new({})
       @host = host
       @port = port
-      @cyc = Cyc::Client.new(@host,@port)
+      @cyc = Cyc::Client.new(:host => @host,:port => @port)
       @line = ""
       @count = 0
     end
